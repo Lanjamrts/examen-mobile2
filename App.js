@@ -2,12 +2,15 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // Use require() to avoid interop issues and stale caches
 const HomeScreenModule = require('./screens/HomeScreen');
 const PublishMealScreenModule = require('./screens/PublishMealScreen');
 const MealDetailScreenModule = require('./screens/MealDetailScreen');
+const MapScreenModule = require('./screens/MapScreen');
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 function isValidComponent(Cmp) {
   return (
@@ -30,6 +33,7 @@ function Fallback({ name }) {
 const HomeCmp = HomeScreenModule?.default ?? HomeScreenModule;
 const PublishCmp = PublishMealScreenModule?.default ?? PublishMealScreenModule;
 const MealDetailCmp = MealDetailScreenModule?.default ?? MealDetailScreenModule;
+const MapCmp = MapScreenModule?.default ?? MapScreenModule;
 
 // Debug logs (will show once in console)
 try {
@@ -40,19 +44,43 @@ try {
 const SafeHome = isValidComponent(HomeCmp) ? HomeCmp : () => <Fallback name="HomeScreen" />;
 const SafePublish = isValidComponent(PublishCmp) ? PublishCmp : () => <Fallback name="PublishMealScreen" />;
 const SafeMealDetail = isValidComponent(MealDetailCmp) ? MealDetailCmp : () => <Fallback name="MealDetailScreen" />;
+const SafeMap = isValidComponent(MapCmp) ? MapCmp : () => <Fallback name="MapScreen" />;
+
+function Tabs() {
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        headerStyle: { backgroundColor: '#FF6B6B' },
+        headerTintColor: '#fff',
+        headerTitleStyle: { fontWeight: 'bold' },
+        tabBarActiveTintColor: '#FF6B6B',
+      }}
+    >
+      <Tab.Screen
+        name="Home"
+        component={SafeHome}
+        options={{ title: '🍽️ Repas' }}
+      />
+      <Tab.Screen
+        name="Map"
+        component={SafeMap}
+        options={{ title: '🗺️ Carte' }}
+      />
+    </Tab.Navigator>
+  );
+}
 
 export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
         screenOptions={{
           headerStyle: { backgroundColor: '#FF6B6B' },
           headerTintColor: '#fff',
           headerTitleStyle: { fontWeight: 'bold' },
         }}
       >
-        <Stack.Screen name="Home" component={SafeHome} options={{ title: '🍽️ Repas Solidaires' }} />
+        <Stack.Screen name="Root" component={Tabs} options={{ headerShown: false }} />
         <Stack.Screen name="Publish" component={SafePublish} options={{ title: 'Publier un repas' }} />
         <Stack.Screen name="MealDetail" component={SafeMealDetail} options={{ title: 'Détail du repas' }} />
       </Stack.Navigator>

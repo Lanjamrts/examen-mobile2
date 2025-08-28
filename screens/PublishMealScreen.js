@@ -5,10 +5,13 @@ import { addMeal } from '../services/mealService';
 
 const QUARTIERS = ['Centre-ville', 'Quartier Nord', 'Quartier Sud', 'Banlieue'];
 
-function PublishMealScreenBase({ navigation }) {
+function PublishMealScreenBase({ navigation, route }) {
   const [titre, setTitre] = useState('');
   const [description, setDescription] = useState('');
-  const [quartier, setQuartier] = useState(QUARTIERS[0]);
+  const initialQuartier = route?.params?.initialQuartier;
+  const [quartier, setQuartier] = useState(
+    QUARTIERS.includes(initialQuartier) ? initialQuartier : QUARTIERS[0]
+  );
   const [portions, setPortions] = useState('1');
   const [limiteHeureH, setLimiteHeureH] = useState('4');
 

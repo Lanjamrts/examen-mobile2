@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect
+} from 'react';
 import {
   View,
   Text,
@@ -9,9 +12,14 @@ import {
 } from 'react-native';
 import MealCard from '../components/MealCard';
 import FilterComponent from '../components/FilterComponent';
-import { getMeals, reserveMeal } from '../services/mealService';
+import {
+  getMeals,
+  reserveMeal
+} from '../services/mealService';
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({
+  navigation
+}) {
   const [meals, setMeals] = useState([]);
   const [filteredMeals, setFilteredMeals] = useState([]);
   const [filter, setFilter] = useState('all');
@@ -53,7 +61,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <FilterComponent onFilter={handleFilter} currentFilter={filter} />
-      
+
       <FlatList
         data={filteredMeals}
         keyExtractor={(item) => item.id}
@@ -94,7 +102,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     elevation: 8,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
     shadowOpacity: 0.25,
     shadowRadius: 4,
   },
